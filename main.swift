@@ -41,22 +41,57 @@ do {
         print("Loaded \(notes.count) existing notes.")
     }
     // 6. we will create the new note 
-    let newNote = Note(
-        id: UUID(),
-        text: "learning data persistence!",
-        modifiedAt: Date()
-    )
-    // 7. Add the new note to our array 
-    notes.append(newNote)
-    // 8. Save the updated collection 
-    let jsonData = try encoder.encode(notes)
-    try jsonData.write(to: fileURL, options: .atomic)
 
-    // 9. We will display all the notes
-    for note in notes {
-        print("Note: \(note.text)")
+    menuLoop: while true {
+        print("\nSwiftSync")
+        print("1. View all notes")
+        print("2. Add a new note")
+        print("3. Edit a note")
+        print("4. Delete a note")
+        print("5. Exit")
+        print("Choose an option:")
+
+        let choice = readLine() ?? ""
+
+        switch choice {
+            case "1":
+            //Display all the saved notes
+                for note in notes {
+                    print("Note: \(note.text)")
+            }
+                print("Total notes: \(notes.count)")
+            case "2":
+                // Ask the user to create the notes
+                print("Enter your new note:")
+
+                if let text = readLine(), !text.isEmpty {
+                    let newNote = Note (
+                        id: UUID(),
+                        text: text,
+                        modifiedAt: Date()
+                    )
+                    notes.append(newNote)
+                    
+                    let jsonData = try encoder.encode(notes)
+                    try jsonData.write(
+                        to: fileURL, 
+                        options: .atomic
+                    )
+                    print("Note saved successfully!")
+                } else {
+                    print("Empty note. Nothing was save")
+                }
+            case "3":
+                print("Editing is coming next!")
+            case "4": 
+                print("Deletion is coming next!")
+            case "5":
+                print("Goodbye!")
+                break menuLoop
+            default:
+                print("Invalid option. Try again")
+        }
     }
-    print("Total notes: \(notes.count)")
 } catch {
     print("Error: \(error)")
 }
