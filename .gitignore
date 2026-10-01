@@ -1,0 +1,8 @@
+.DS_Store
+.build/
+.swiftpm/
+swiftsync
+hello
+hello.swift
+notes.json
+.env
